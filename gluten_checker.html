@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gluten Checker</title>
+    <link rel="stylesheet" href="gluten_checker.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <p class="hero__eyebrow">Nutrizione smart</p>
+        <h1>Gluten Checker</h1>
+        <p class="hero__subtitle">
+          Cerca un alimento e verifica rapidamente se contiene glutine.
+        </p>
+      </header>
+
+      <section class="card" aria-label="Ricerca alimento">
+        <label for="food-input" class="field-label">Nome prodotto o ingrediente</label>
+        <div class="search-row">
+          <input
+            id="food-input"
+            type="text"
+            placeholder="Es. Salsa di soia"
+            autocomplete="off"
+          />
+          <button id="check-btn" type="button">Controlla</button>
+        </div>
+
+        <div id="result" class="result result--neutral" role="status" aria-live="polite">
+          Inserisci un alimento per iniziare.
+        </div>
+
+        <details class="help">
+          <summary>Come funziona?</summary>
+          <p>
+            Il controllo è basato su una lista dimostrativa di ingredienti comuni.
+            Verifica sempre etichetta e allergeni ufficiali prima del consumo.
+          </p>
+        </details>
+      </section>
+
+      <section class="card" aria-label="Suggerimenti rapidi">
+        <h2>Suggerimenti</h2>
+        <ul class="tips">
+          <li>Controlla i termini: frumento, orzo, segale, malto.</li>
+          <li>Attenzione alle contaminazioni crociate.</li>
+          <li>Preferisci prodotti con dicitura “senza glutine”.</li>
+        </ul>
+      </section>
+    </main>
+
+    <script>
+      const knownFoods = {
+        pane: true,
+        pasta: true,
+        couscous: true,
+        birra: true,
+        avena: true,
+        riso: false,
+        quinoa: false,
+        patate: false,
+        mais: false,
+        "salsa di soia": true,
+        "tamari certificato": false,
+      };
+
+      const input = document.getElementById('food-input');
+      const button = document.getElementById('check-btn');
+      const result = document.getElementById('result');
+
+      function normalize(value) {
+        return value.trim().toLowerCase();
+      }
+
+      function renderResult(message, mode) {
+        result.textContent = message;
+        result.className = `result result--${mode}`;
+      }
+
+      function checkFood() {
+        const key = normalize(input.value);
+
+        if (!key) {
+          renderResult('Inserisci un alimento valido.', 'neutral');
+          return;
+        }
+
+        if (!(key in knownFoods)) {
+          renderResult(
+            'Non ho abbastanza dati su questo alimento. Controlla l’etichetta ufficiale.',
+            'warning'
+          );
+          return;
+        }
+
+        if (knownFoods[key]) {
+          renderResult('⚠️ Potrebbe contenere glutine.', 'danger');
+        } else {
+          renderResult('✅ Generalmente senza glutine.', 'safe');
+        }
+      }
+
+      button.addEventListener('click', checkFood);
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          checkFood();
+        }
+      });
+    </script>
+  </body>
+</html>

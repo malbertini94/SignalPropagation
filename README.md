@@ -15,3 +15,10 @@ The core MATLAB script (`propagation.m`) focuses on a straightforward point-to-p
 3. Run `propagation.m` to obtain the signal loss at the receiver’s location.
 
 Because the project is intentionally minimal, it can be easily extended to handle multiple receivers, different propagation models, or additional environmental parameters.
+
+## Gluten Checker UI demo
+A small front-end demo has been added to make a "Gluten Checker" interface less minimal and more user-friendly.
+
+- Open `gluten_checker.html` in a browser.
+- The page uses `gluten_checker.css` for styling and includes a simple JavaScript check flow.
+- The food database is illustrative only and should not be used as medical advice.
